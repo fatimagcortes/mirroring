@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Mirroring - Minimal</title>
+  <title>Mirroring - Minimal Round Camera</title>
   <style>
     body {
       background-color: #000;
@@ -26,12 +26,14 @@
     #video {
       margin: 30px auto 0;
       display: block;
-      max-width: 90%;
+      width: 300px;       /* tamaño fijo para círculo */
+      height: 300px;      /* mismo tamaño para que sea redondo */
+      object-fit: cover;  /* recorta para llenar bien */
       border: 2px solid #555;
-      border-radius: 8px;      /* esquinas redondeadas */
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1); /* sombra suave */
-      opacity: 0;              /* empieza oculto */
-      transition: opacity 1s ease; /* transición suave */
+      border-radius: 50%; /* hace la forma circular */
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      opacity: 0;
+      transition: opacity 1s ease;
     }
     em {
       color: #aaa;
@@ -41,7 +43,7 @@
 <body>
 
   <div id="passage"></div>
-  <video id="video" autoplay></video>
+  <video id="video" autoplay playsinline></video>
 
   <script>
     let state = 0;
@@ -85,7 +87,7 @@
       navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => {
           video.srcObject = stream;
-          video.style.opacity = '1'; // Aparece con fade-in
+          video.style.opacity = '1'; // fade-in
         })
         .catch(err => console.error(err));
     }
