@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mirroring - Minimal</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #f0f0f0;
+      font-family: 'Georgia', serif;
+      font-size: 1.4em;
+      text-align: center;
+      padding: 60px 20px;
+      line-height: 1.5;
+    }
+    a {
+      display: inline-block;
+      margin: 20px 10px;
+      color: #f0f0f0;
+      text-decoration: underline;
+      transition: color 0.3s ease;
+    }
+    a:hover {
+      color: #999;
+    }
+    #video {
+      margin: 30px auto 0;
+      display: block;
+      max-width: 90%;
+      border: 2px solid #555;
+      border-radius: 8px;      /* esquinas redondeadas */
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1); /* sombra suave */
+      opacity: 0;              /* empieza oculto */
+      transition: opacity 1s ease; /* transición suave */
+    }
+    em {
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="passage"></div>
+  <video id="video" autoplay></video>
+
+  <script>
+    let state = 0;
+    const passage = document.getElementById('passage');
+    const video = document.getElementById('video');
+
+    function render() {
+      if(state === 0) {
+        passage.innerHTML = `
+          You wake up and look at yourself in the mirror.<br><br>
+          What do you see?<br><br>
+          <a href="#" onclick="state=1; render()">I look like my father</a>
+          <a href="#" onclick="state=2; render()">I don’t look like him at all</a>
+        `;
+      } else if(state === 1) {
+        passage.innerHTML = `
+          You chose: I look like my father.<br><br>
+          How do you feel?<br><br>
+          <a href="#" onclick="state=3; render()">Proud</a>
+          <a href="#" onclick="state=4; render()">Rejected</a>
+        `;
+      } else if(state === 2) {
+        passage.innerHTML = `
+          You chose: I don’t look like him at all.<br><br>
+          How do you feel?<br><br>
+          <a href="#" onclick="state=3; render()">Relieved</a>
+          <a href="#" onclick="state=4; render()">Sad</a>
+        `;
+      } else {
+        passage.innerHTML = `
+          This is your final reflection.<br>
+          Look at yourself now.<br><br>
+          <em>Sometimes you are the same, sometimes different.</em>
+        `;
+        video.style.display = 'block';
+        startCamera();
+      }
+    }
+
+    function startCamera() {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+          video.srcObject = stream;
+          video.style.opacity = '1'; // Aparece con fade-in
+        })
+        .catch(err => console.error(err));
+    }
+
+    render();
+  </script>
+
+</body>
+</html>
